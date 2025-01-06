@@ -310,7 +310,7 @@ body {
 }
 
 .siswa .kesan .cta:hover {
-  text-decoration: underline;
+  background-color: #fc21c9fd;
 }
 
 .siswa p,
@@ -350,7 +350,6 @@ body {
   margin: 0.5rem auto 0.5rem;
   margin-bottom: 0.5rem;
   background-color: var(--primary);
-  border: 1px solid var(--primary);
   display: inline-block;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
@@ -361,7 +360,7 @@ body {
 
 .siswa .row .siswa-card .siswa-card-title a:hover,
 .siswa .row .siswa-card .renisa a:hover {
-  text-decoration: underline;
+  background-color: #1b0458;
 }
 
 .siswa .row .siswa-card .siswa-card-instagram {
@@ -422,7 +421,6 @@ body {
   display: inline-block;
   padding: 0.5rem 1rem;
   background-color: #a409e6c8;
-  border: 1px solid #a409e6c8 ;
   border-radius: 0.5rem;
   cursor: pointer;
   text-align: center;
@@ -430,7 +428,7 @@ body {
 }
 
 .wali .row .wali-card .wali-card-title a:hover {
-  text-decoration: underline;
+  background-color: #a409e683;
 }
 
 .wali .row .wali-card .wali-card-keterangan {
@@ -944,7 +942,3 @@ footer .credit a {
     font-size: 13px;
   }
 }
-
-
- 
-
