@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debug Test - Exposixx Memories</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .debug-section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .success { color: green; }
+    .error { color: red; }
+    .info { color: blue; }
+    pre {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    .test-card {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔍 Debug Test - Exposixx Memories</h1>
+  
+  <div class="debug-section">
+    <h2>1. Library Loading Test</h2>
+    <div id="library-test"></div>
+  </div>
+  
+  <div class="debug-section">
+    <h2>2. Memories Data Test</h2>
+    <div id="memories-test"></div>
+  </div>
+  
+  <div class="debug-section">
+    <h2>3. Siswa Rendering Test</h2>
+    <div id="siswa-test"></div>
+  </div>
+  
+  <div class="debug-section">
+    <h2>4. Timeline Rendering Test</h2>
+    <div id="timeline-test"></div>
+  </div>
+
+  <!-- Load Scripts -->
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="data/memories-data.js"></script>
+  
+  <script>
+    // Test 1: Library Loading
+    const libraryTest = document.getElementById('library-test');
+    const checks = {
+      'Feather Icons': typeof feather !== 'undefined',
+      'AOS': typeof AOS !== 'undefined',
+      'Memories Data': typeof memoriesData !== 'undefined'
+    };
+    
+    let html = '';
+    for (const [name, loaded] of Object.entries(checks)) {
+      const status = loaded ? 
+        `<span class="success">✅ Loaded</span>` : 
+        `<span class="error">❌ Not Loaded</span>`;
+      html += `<p><strong>${name}:</strong> ${status}</p>`;
+    }
+    libraryTest.innerHTML = html;
+    
+    // Test 2: Memories Data
+    const memoriesTest = document.getElementById('memories-test');
+    if (typeof memoriesData !== 'undefined') {
+      const byYear = {
+        '10': memoriesData.filter(m => m.year === '10').length,
+        '11': memoriesData.filter(m => m.year === '11').length,
+        '12': memoriesData.filter(m => m.year === '12').length
+      };
+      
+      memoriesTest.innerHTML = `
+        <p class="success">✅ Memories data loaded successfully!</p>
+        <p><strong>Total memories:</strong> ${memoriesData.length}</p>
+        <p><strong>Kelas 10:</strong> ${byYear['10']} memories</p>
+        <p><strong>Kelas 11:</strong> ${byYear['11']} memories</p>
+        <p><strong>Kelas 12:</strong> ${byYear['12']} memories</p>
+        <details>
+          <summary>View first 3 memories</summary>
+          <pre>${JSON.stringify(memoriesData.slice(0, 3), null, 2)}</pre>
+        </details>
+      `;
+    } else {
+      memoriesTest.innerHTML = `<p class="error">❌ Memories data not loaded</p>`;
+    }
+    
+    // Test 3: Siswa Data (from search.js)
+    const siswaTest = document.getElementById('siswa-test');
+    const testSiswa = [
+      { nama: "AKMAL HADI PRAWOTO", instagram: "@akmallhadii._", gender: "laki-laki", image: "img/siswa/1.JPG" },
+      { nama: "AMANDA QONITA", instagram: "@amandaaqonita", gender: "perempuan", image: "img/siswa/2.jpg" }
+    ];
+    
+    siswaTest.innerHTML = `
+      <p class="info">📝 Siswa data is defined in search.js</p>
+      <p><strong>Expected:</strong> 36 students</p>
+      <p><strong>Test rendering 2 sample cards:</strong></p>
+      ${testSiswa.map(siswa => `
+        <div class="test-card">
+          <strong>${siswa.nama}</strong><br>
+          ${siswa.instagram} | ${siswa.gender}<br>
+          <img src="${siswa.image}" alt="${siswa.nama}" style="max-width: 100px; margin-top: 10px;">
+        </div>
+      `).join('')}
+    `;
+    
+    // Test 4: Timeline Rendering
+    const timelineTest = document.getElementById('timeline-test');
+    if (typeof memoriesData !== 'undefined') {
+      const kelas10 = memoriesData.filter(m => m.year === '10').slice(0, 2);
+      
+      timelineTest.innerHTML = `
+        <p class="success">✅ Timeline can be rendered</p>
+        <p><strong>Sample: First 2 memories from Kelas 10:</strong></p>
+        ${kelas10.map(memory => `
+          <div class="test-card">
+            <strong>${memory.title}</strong><br>
+            <small>📅 ${memory.yearLabel} | 🏷️ ${memory.categoryLabel}</small><br>
+            <img src="${memory.image}" alt="${memory.title}" style="max-width: 200px; margin-top: 10px;">
+            <p>${memory.description.substring(0, 100)}...</p>
+          </div>
+        `).join('')}
+      `;
+    } else {
+      timelineTest.innerHTML = `<p class="error">❌ Cannot render timeline</p>`;
+    }
+    
+    console.log('✅ Debug test complete');
+    console.log('Memories data:', memoriesData);
+  </script>
+</body>
+</html>
