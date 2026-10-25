@@ -267,37 +267,13 @@ class MemoriesLightbox {
     }
   }
 
-  async downloadImage() {
+  downloadImage() {
     const memory = this.memories[this.currentIndex];
     const extension = memory.image.split(/[?#]/, 1)[0].match(/\.[^./\\]+$/)?.[0] || '.jpg';
     const filename = `exposixx-${memory.id}-${memory.title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '')}${extension}`;
-
-    if (navigator.share && navigator.canShare) {
-      try {
-        const response = await fetch(memory.image);
-        if (!response.ok) {
-          throw new Error(`Gagal mengambil foto (${response.status}).`);
-        }
-
-        const image = new File([await response.blob()], filename, {
-          type: response.headers.get('content-type') || 'image/jpeg'
-        });
-
-        if (navigator.canShare({ files: [image] })) {
-          await navigator.share({ files: [image], title: memory.title });
-          return;
-        }
-      } catch (error) {
-        if (error.name === 'AbortError') return;
-        console.error('Gagal membagikan file foto:', error);
-        if (window.utils && window.utils.showToast) {
-          window.utils.showToast('Foto tidak dapat dikirim ke Galeri. Unduhan dimulai sebagai gantinya.', 'error');
-        }
-      }
-    }
 
     const link = document.createElement('a');
     link.href = memory.image;
